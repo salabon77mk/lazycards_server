@@ -15,10 +15,14 @@ headers = {
 def new_word(word):
     action = "/words/"
     url = def_url + action + word
+#    print(url)
     return res(url)
     
 
 
 def res(url):
     res = requests.get(url, headers=headers)
+    # if res is not a 404 return it
+#    print(res)
+#    print(res.json())
     return res.json()

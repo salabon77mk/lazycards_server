@@ -3,16 +3,16 @@
 import words_api
 
 # Currently only connects to one api, but can be expanded upon further
-def res(args = []):
-    if len(arguments) < 3:
+# Change up args to accept a dict
+def res(args):
+    if len(args) < 3:
         print("Too few arguments")
-        exit
+        exit()
 
-    word = args[0]
-    deck = args[1]
-    action = args[2]
-
+    word = args["word"]
+    deck = args["deck"]
+    action = args["action"]
     switcher={
-            "word": newWord(word)
+            "word": words_api.new_word(word)
     }
     return switcher.get(action)
