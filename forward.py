@@ -6,37 +6,18 @@ import cgi
 #cgitb.enable()    
 #COMMENT TEST
 
+import anki_req
 import api_handler
 print("Content-Type: text/html; charset=utf-8")
 print()
 print()
 
-#data = api_handler.res(cgi.FieldStorage())
-data = api_handler.res({"word":"toast", "deck":"ing", "action":"word"})
+#qs = cgi.FieldStorage()
+qs = {"word":"toaster", "deck":"Default", "apiact":"word", "ankact":"addNote"}
+data = api_handler.res(qs)
 
 #check if data is good, otherwise maybe a false word or action was used
-#print("HELLOOOOOO")
-#print(data)
 
-r = requests.post('http://127.0.0.1:8765', json = {
-    "action": "addNote",
-    "version": 6,
-    "params": {
-        "note": {
-            "deckName": "Default",
-            "modelName": "Basic",
-            "fields": {
-                "Front": "front content",
-                "Back": "back content"
-            },
-            "options": {
-                "allowDuplicate": False
-            },
-            "tags": [
-                "yomichan"
-            ]
-        }
-    }
-})
+success = anki_req.handle(data, qs)
 
-print(r.json())
+print(success)
