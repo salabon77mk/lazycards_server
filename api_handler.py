@@ -9,8 +9,8 @@ def res(args):
     errors.check_arg(args)
 
     word = args["word"]
-    deck = args["deck"]
-    apiact = args["apiact"]
+    api_act = args["apiact"]
+#    api_choice = args["apichoice"]
     switcher={
             "word": words_api.new_word(word)
     }
