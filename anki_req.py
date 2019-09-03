@@ -47,8 +47,7 @@ def handle(data, args):
     deck = args["deck"]
     ankact = args["ankact"]
 
-    running = is_running()
-    if running is False:
+    if is_running() is False:
         print("No connection to Anki")
         exit()
 
@@ -60,8 +59,7 @@ def handle(data, args):
 
 # later implement tags
 def add_note(data, word, deck):
-    exists = deck_exists(deck)
-    if exists is False:
+    if deck_exists(deck) is False:
         print("Deck does not exist")
         return False
     

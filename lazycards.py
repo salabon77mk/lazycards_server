@@ -8,13 +8,18 @@ from flask import request
 
 import anki_req
 import api_handler
+import words_api
 
 app = Flask(__name__)
 
-@app.route("/api_resolve", methods=['GET', 'POST'])
+@app.route("/")
+def hello():
+    return "Hello world"
+
+@app.route("/api_resolve", methods=['POST', 'GET'])
 def default():
     qs = {"word":"toaster", "deck":"Default", "apiact":"word", "ankact":"addNote"}
-    dat = request.get_json()
+    req = request.get_json()
     data = api_handler.res(qs)
 #    success = anki_req.handle(data, qs)
     return data
@@ -32,6 +37,15 @@ def anki_sub(data):
 def file_post(data):
     return  ""
 
+
+# Simplest route, least customization, just add a definition and be done
+@app.route("/fast_sub", methods=['POST'])
+def fast_sub():
+    data = request.get_json()
+    print(data)
+    res = words_api.new_word(data["word"])
+    success = anki_req.fast_handle(res, data)
+    return ""
 """
 #check if data is good, otherwise maybe a false word or action was used
 

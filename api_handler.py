@@ -14,4 +14,4 @@ def res(args):
     switcher={
             "word": words_api.new_word(word)
     }
-    return switcher.get(apiact)
+    return switcher.get(api_act)
