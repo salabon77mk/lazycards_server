@@ -24,9 +24,6 @@ def default():
 #    success = anki_req.handle(data, qs)
     return data
 
-if __name__ == "__main__":
-    app.run()
-
 @app.route("/anki_sub", methods=['POST'])
 def anki_sub(data):
     return ""
@@ -42,13 +39,10 @@ def file_post(data):
 @app.route("/fast_sub", methods=['POST'])
 def fast_sub():
     data = request.get_json()
-    print(data)
     res = words_api.new_word(data["word"])
     success = anki_req.fast_handle(res, data)
     return ""
-"""
-#check if data is good, otherwise maybe a false word or action was used
 
 
-print(success)
-"""
+if __name__ == "__main__":
+    app.run()
