@@ -4,14 +4,34 @@ import requests
 
 import json
 
+from http import HTTPStatus
+
 from flask import Flask
 from flask import request
+from flask import jsonify
 
 import anki_req
 import api_handler
 import words_api
+import server_comm
+import decks_endpoint_handler
 
 app = Flask(__name__)
+
+
+# Jsonify the response, might not be needed
+def handle_anki_response(res):
+    # craft a flask response
+    if res == HTTPStatus.INTERNAL_SERVER_ERROR:
+        return ""
+    else:
+        return jsonify(res)
+
+
+# Create a custom Flask response that tells the server is down
+# Might not be needed must test with app first
+def server_unavailable_res():
+    return ""
 
 @app.route("/")
 def hello():
@@ -25,11 +45,6 @@ def default():
     data = api_handler.res(qs)
 #    success = anki_req.handle(data, qs)
     return data
-
-
-@app.route("/anki_sub", methods=['POST'])
-def anki_sub(data):
-    return ""
 
 
 # Will accept an array of JSON that will hold api requests
@@ -47,6 +62,17 @@ def fast_sub():
     return ""
 
 
+# Get the available decks on Anki
+# This data will populate the drop down menu in LazyCards
+@app.route("/get_decks", methods=['GET'])
+def decks_get():
+    if not server_comm.is_running():
+        return HTTPStatus.SERVICE_UNAVAILABLE
+
+    res = decks_endpoint_handler.get_deck_names()
+    return res
+
+
 if __name__ == "__main__":
     app.run()
-    #    app.run(host = '0.0.0.0')
+

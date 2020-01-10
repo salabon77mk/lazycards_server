@@ -1,2 +1,6 @@
 apikey.txt
+venv/
+__pycache__/
+
+*.*
 
