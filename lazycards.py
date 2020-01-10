@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-# enable debugging
 import requests
+
 import json
 
 from flask import Flask
@@ -16,6 +17,7 @@ app = Flask(__name__)
 def hello():
     return "Hello world"
 
+
 @app.route("/api_resolve", methods=['POST', 'GET'])
 def default():
     qs = {"word":"toaster", "deck":"Default", "apiact":"word", "ankact":"addNote"}
@@ -23,6 +25,7 @@ def default():
     data = api_handler.res(qs)
 #    success = anki_req.handle(data, qs)
     return data
+
 
 @app.route("/anki_sub", methods=['POST'])
 def anki_sub(data):
@@ -46,3 +49,4 @@ def fast_sub():
 
 if __name__ == "__main__":
     app.run()
+    #    app.run(host = '0.0.0.0')

@@ -11,13 +11,13 @@ payload_np = {
     "version": VERSION
 }
 
-#def otherwise
+
+# def otherwise
 payload_temp = {
     "action": None,
     "version": VERSION,
     "params" : {}
 }
-
 
 
 # Check to see if connection is alive
@@ -91,4 +91,3 @@ def add_note(data, word, deck):
         }
     }
     return requests.post(HOST, json=payload)
-
