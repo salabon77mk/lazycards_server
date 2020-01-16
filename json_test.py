@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import json_keys
+import android_json_keys
 
 
-print(json_keys.WORD)
+print(android_json_keys.WORD)

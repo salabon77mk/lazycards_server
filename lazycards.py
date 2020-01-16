@@ -10,55 +10,39 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 
-import anki_req
-import api_handler
+import notes_endpoint_handler
 import words_api
 import server_comm
 import decks_endpoint_handler
+import android_json_keys
+import errors
 
 app = Flask(__name__)
 
-
-# Jsonify the response, might not be needed
-def handle_anki_response(res):
-    # craft a flask response
-    if res == HTTPStatus.INTERNAL_SERVER_ERROR:
-        return ""
-    else:
-        return jsonify(res)
-
-
-# Create a custom Flask response that tells the server is down
-# Might not be needed must test with app first
-def server_unavailable_res():
-    return ""
 
 @app.route("/")
 def hello():
     return "Hello world"
 
 
-@app.route("/api_resolve", methods=['POST', 'GET'])
-def default():
-    qs = {"word":"toaster", "deck":"Default", "apiact":"word", "ankact":"addNote"}
-    req = request.get_json()
-    data = api_handler.res(qs)
-#    success = anki_req.handle(data, qs)
-    return data
+# Will handle CRUD ops relating to cards
+@app.route("/add_note", methods=['POST'])
+def add_note():
+    if not server_comm.is_running():
+        return errors.ANKI_DOWN
 
-
-# Will accept an array of JSON that will hold api requests
-@app.route("/file_post", methods=['POST'])
-def file_post(data):
-    return  ""
-
-
-# Simplest route, least customization, just add a definition and be done
-@app.route("/fast_sub", methods=['POST'])
-def fast_sub():
     data = request.get_json()
-    res = words_api.new_word(data["word"])
-    success = anki_req.fast_handle(res, data)
+    api = data[android_json_keys.API]
+
+    new_word_json = None
+    if api == android_json_keys.Apis.WORDS:
+        new_word_json = words_api.new_word(data[android_json_keys.WORD])
+
+    # In case we got an http error response from above
+    if errors.is_error(new_word_json):
+        return new_word_json
+
+    notes_endpoint_handler.add_note(new_word_json)
     return ""
 
 
@@ -67,11 +51,18 @@ def fast_sub():
 @app.route("/get_decks", methods=['GET'])
 def decks_get():
     if not server_comm.is_running():
-        return HTTPStatus.SERVICE_UNAVAILABLE
+        return errors.ANKI_DOWN
 
     res = decks_endpoint_handler.get_deck_names()
+
     return res
 
+
+@app.route("/test_new_card", methods=['GET'])
+def test_create():
+    qs = {"word": "toast", "options": ["definition", "synonyms"]}
+    new_word_json = words_api.new_word(qs["word"], qs["options"])
+    notes_endpoint_handler.add_note(new_word_json)
 
 if __name__ == "__main__":
     app.run()

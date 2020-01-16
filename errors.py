@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 
-MIN_ARGS = 3
+ANKI_DOWN = ("", 503)
+ANKI_CONNECT_ERROR = ("", 500)
 
 
-def check_arg(args):
-    if len(args) < MIN_ARGS:
-        print("Too few arguments")
-        exit()
+def http_error(http_resp):
+    return "", http_resp
+
+
+def is_error(data):
+    if type(data) is tuple:
+        return True
+    return False
+
+
