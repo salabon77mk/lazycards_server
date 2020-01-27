@@ -36,14 +36,13 @@ def add_note():
 
     new_word_json = None
     if api == android_json_keys.Apis.WORDS:
-        new_word_json = words_api.new_word(data[android_json_keys.WORD])
+        new_word_json = words_api.new_word(data[android_json_keys.WORD], data[words_api.OPTIONS])
 
     # In case we got an http error response from above
     if errors.is_error(new_word_json):
         return new_word_json
 
-    notes_endpoint_handler.add_note(new_word_json)
-    return ""
+    return notes_endpoint_handler.add_note(data, new_word_json)
 
 
 # Get the available decks on Anki
@@ -53,16 +52,22 @@ def decks_get():
     if not server_comm.is_running():
         return errors.ANKI_DOWN
 
-    res = decks_endpoint_handler.get_deck_names()
-
-    return res
+    return decks_endpoint_handler.get_deck_names()
 
 
 @app.route("/test_new_card", methods=['GET'])
 def test_create():
-    qs = {"word": "toast", "options": ["definition", "synonyms"]}
+    qs = {
+        "word": "toast",
+        "deck": "MORE",
+        "tags": [""],
+        "options": ["definition", "synonyms"]}
     new_word_json = words_api.new_word(qs["word"], qs["options"])
-    notes_endpoint_handler.add_note(new_word_json)
+    if errors.is_error(new_word_json):
+        return new_word_json
+
+    notes_endpoint_handler.add_note(qs, new_word_json)
+
 
 if __name__ == "__main__":
     app.run()

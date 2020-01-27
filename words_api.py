@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Handles requests that use the Words API"""
 import requests
 import copy
 from flask import Flask
@@ -8,12 +9,12 @@ import errors
 
 # Most important keys in the Words API Response
 RESULTS = "results"
-WORD = "word"
 
 # These are the options for what to include in the final new word body
 # The options can be found in the response body from words namely in RESPONSE[_RESULTS] (a list)
 # IF THESE ARE EDITED MAKE SURE TO EDIT Words_API.java in the app
-_EVERYTHING = "everything"
+OPTIONS = "options" # part of the JSON post request from the app
+_EVERYTHING = "EVERYTHING"
 _DEFINITION = "definition"
 _SYNONYMS = "synonyms"
 _ANTONYMS = "antonyms"
@@ -43,6 +44,12 @@ headers = {
 
 # Option list is never empty
 def new_word(word, option_list):
+    """
+    Gets response from the Words API
+    :param word: What word will be part of the API
+    :param option_list: User specified options. This data originates in the Android app
+    :return: Results list from the API response
+    """
     action = "/words/"
     url = def_url + action + word
     response = requests.get(url, headers=headers)
@@ -62,6 +69,14 @@ def new_word(word, option_list):
 
 
 def craft_finished_card(words_api_response, option_set):
+    """
+    Clean the response body of options that user did not specify
+    We return the results of the body, we don't need the word, pronunciation, syllables, at least I think?
+
+    :param words_api_response: JSON api response
+    :param option_set: User specified set of options to include in the final card (Definition, Synonyms, etc..
+    :return: Returns the RESULTS segment of the api response, don't need the rest of the body
+    """
     response_copy = copy.deepcopy(words_api_response)
     res = response_copy[RESULTS]
 
@@ -70,5 +85,5 @@ def craft_finished_card(words_api_response, option_set):
             if k not in option_set:
                 del words_api_response[RESULTS][i][k]
 
-    return words_api_response
+    return words_api_response[RESULTS]
 
