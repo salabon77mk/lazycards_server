@@ -9,6 +9,10 @@ def http_error(http_resp):
 
 
 def is_error(data):
+    """
+    In this app, tuples represent errors due to the nature of Flask responses
+    Therefore, if the data is a tuple, then something wrong has happened
+    """
     if type(data) is tuple:
         return True
     return False
