@@ -6,6 +6,7 @@ This Flask based server handles requests from the
 ## REQUIREMENTS
 
 * A web server (Apache / nginx)
+* A [WordsAPI key(it's free!)](https://www.wordsapi.com/). 
 
 ## How to set up the Server using Apache
 
@@ -18,7 +19,7 @@ Arch whereas in Ubuntu it's apache2, the virtualhosts file in the Ubuntu package
 has a different name, etc...
 
 1. Install httpd
-2. Add a new virtual host to httpd-vhosts.conf located at /etc/httpd/conf/extra. \n
+2. Add a new virtual host to httpd-vhosts.conf located at _/etc/httpd/conf/extra_
 EXAMPLE
 ```
 <VirtualHost *:80>
@@ -39,7 +40,6 @@ EXAMPLE
 </VirtualHost>
 
 ```
-\n
 
 ServerName should preferably be your current local host
 Ensure that the python-path points to the location of your
@@ -47,17 +47,15 @@ LazyCards server
 
 3. Install mod\_wsgi
 
-4. In your httpd.conf (located at /etc/httpd/conf)
-1. Make sure **ServerRoot** is set to where you want to place the server. Mine is /etc/httpd
-2. Add **LoadModule wsgi\_module modules/mod\_wsgi.so**
-3. Add **Listen 80** (or the port of your choice)
+4. In your httpd.conf (located at _/etc/httpd/conf_)
+    1. Make sure **ServerRoot** is set to where you want to place the server. Mine is /etc/httpd
+    2. Add **LoadModule wsgi\_module modules/mod\_wsgi.so** somewhere
+    3. Add **Listen 80** (or the port of your choice and makesure the port in VirtualHost reflects this change)
 
-5. Place the LazyCards server in the directory where you specified your **ServerRoot**
-
-6. In lazycards\_server/wsgi, open lazycards.wsgi
-and change the path in sys.change.insert(0, **some path**) to 
-**ServerRoot**/lazycards\_server
-**\*\*NOTE:** if the path is somewhere in /home, make sure to chmod 755 the folders from root to where you placed the server
+5. Place the LazyCards server in the directory where you specified your **ServerRoot**, in the same folder:
+    1. In _/wsgi_, open lazycards.wsgi and change the path in sys.change.insert(0, **some path**) to the path of the lazycards\_server
+**\*\*NOTE:** if the path is somewhere in /home, make sure to chmod 755 the folders from root to the directory of lazycards
+    2. In the root directory of lazycards, create a file named "apikey.txt" and place your WordsAPI key in there.
 
 7. Start up httpd (sudo systemctl start httpd)
 
