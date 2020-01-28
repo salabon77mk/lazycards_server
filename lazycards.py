@@ -66,7 +66,7 @@ def test_create():
     if errors.is_error(new_word_json):
         return new_word_json
 
-    notes_endpoint_handler.add_note(qs, new_word_json)
+    return notes_endpoint_handler.add_note(qs, new_word_json)
 
 
 if __name__ == "__main__":

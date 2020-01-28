@@ -14,6 +14,7 @@ from http import HTTPStatus
 import payload_generator
 import errors
 
+# The default address that AnkiConnect binds to
 _HOST = 'http://127.0.0.1:8765'
 
 
@@ -40,6 +41,6 @@ def send_and_receive_payload(payload):
     if res.status_code == HTTPStatus.OK:
         return json.loads(res.content)
 
-    return errors.AnkiConnectError
+    return errors.ANKI_CONNECT_ERROR
 
 

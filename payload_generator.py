@@ -13,7 +13,6 @@ def gen_payload_no_params(action):
     :param action: The action AnkiConnect will perform
     :return:
     """
-    # No parameters
     payload = {
         _ACTION: action,
         _VERSION_STR: _VERSION_INT

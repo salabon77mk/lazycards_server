@@ -14,8 +14,8 @@ This Flask based server handles requests from the
 
 **\*\*NOTE:**
 These directions are identical on different distros and the only
-differences are the location and name pertaining to Apache, e.g httpd is the package in 
-Arch whereas in Ubuntu it's apache2, the virtualhosts file in the Ubuntu package 
+differences are the locations and names of files pertaining to Apache, e.g httpd is the package in 
+Arch whereas in Ubuntu it's apache2, the httpd-vhosts.conf file in the Ubuntu package 
 has a different name, etc...
 
 1. Install httpd

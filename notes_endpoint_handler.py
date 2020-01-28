@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""Contains functions response for CRUD ops on NOTES"""
-
-import requests
+"""Contains functions responsible for CRUD ops on NOTES"""
 import anki_connect_key_values as ac
 import android_json_keys as jk
 
@@ -9,19 +7,12 @@ import payload_generator
 import server_comm
 
 
-import json
-
-# Anki Actions
-
-
-# later implement tags
 def add_note(app_data, api_response):
     """
     :param app_data: JSON body from the LazyCards Android app
     :param api_response: The response acquired for that word
     :return:
     """
-    print(api_response)
     _ADD_NOTE = "addNote"
     params = {
         ac.NOTE: {
@@ -44,25 +35,28 @@ def add_note(app_data, api_response):
 
 
 def __add_note_parse_words(api_response):
+    """
+    :param api_response:
+    :return: A formatted version of the api_response that looks like this:
+    -----------------------------
+
+    KEY_1: Word_1
+    Word_2
+
+    KEY_2: Word_3
+    Word_4
+
+    ---------------------------
+    """
     b = "<br>"
-    skip = "<br><br>"
-    double_skip = "<br><br><br>"
     string_rep = ""
     for i in api_response:
         for (k, v) in i.items():
-            string_rep += k + ": "
+            string_rep += b + "<b>" + k + "</b>" + ": "
             if type(v) is list:
                 for s in v:
                     string_rep += s + b
             else:
-                string_rep += v + skip
-        string_rep += double_skip + "<hr>"
-    print(string_rep)
+                string_rep += v + b
+        string_rep += b + "<hr>"
     return string_rep
-
-
-
-
-
-
-
