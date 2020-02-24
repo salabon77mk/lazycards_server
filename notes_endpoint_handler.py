@@ -13,6 +13,12 @@ def add_note(app_data, api_response):
     :param api_response: The response acquired for that word
     :return:
     """
+
+    # Process the custom back of note info if it exists
+    back = ""
+    if app_data[jk.BACK_CARD] is not None and len(app_data[jk.BACK_CARD]) != 0:
+        back = "<br>" + app_data[jk.BACK_CARD] + "<br><hr>"
+
     _ADD_NOTE = "addNote"
     params = {
         ac.NOTE: {
@@ -20,7 +26,7 @@ def add_note(app_data, api_response):
             ac.MODEL_NAME: ac.BASIC,
             ac.FIELDS: {
                 ac.FRONT: app_data[jk.WORD],
-                ac.BACK: __add_note_parse_words(api_response)
+                ac.BACK: back + __add_note_parse_words(api_response)
             },
             ac.OPTIONS: {
                 ac.ALLOW_DUPLICATE: False

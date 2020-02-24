@@ -58,7 +58,7 @@ def decks_get():
 @app.route("/test_new_card", methods=['GET'])
 def test_create():
     qs = {
-        "word": "toast",
+        "word": "ergerg",
         "deck": "MORE",
         "tags": [""],
         "options": ["definition", "synonyms"]}

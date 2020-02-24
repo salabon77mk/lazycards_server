@@ -4,8 +4,9 @@
 
 WORD = "word"
 DECK = "deck"
+BACK_CARD = "back"
 TAGS = "tags"
-ANKI_ACTION = "anki_action"
+#ANKI_ACTION = "anki_action"
 OPTIONS = "options"
 API = "api"
 
@@ -13,6 +14,7 @@ API = "api"
 # List of APIs to use
 class Apis:
     WORDS = 0
+    NONE = 1
 
 
 
