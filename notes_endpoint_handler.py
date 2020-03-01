@@ -19,6 +19,10 @@ def add_note(app_data, api_response):
     if app_data[jk.BACK_CARD] is not None and len(app_data[jk.BACK_CARD]) != 0:
         back = "<br>" + app_data[jk.BACK_CARD] + "<br><hr>"
 
+    # Will be true if no API selected, should handle potentially weird API responses too
+    if len(api_response) != 0:
+        back += __add_note_parse_words(api_response)
+
     _ADD_NOTE = "addNote"
     params = {
         ac.NOTE: {
@@ -26,7 +30,7 @@ def add_note(app_data, api_response):
             ac.MODEL_NAME: ac.BASIC,
             ac.FIELDS: {
                 ac.FRONT: app_data[jk.WORD],
-                ac.BACK: back + __add_note_parse_words(api_response)
+                ac.BACK: back
             },
             ac.OPTIONS: {
                 ac.ALLOW_DUPLICATE: False
@@ -34,8 +38,7 @@ def add_note(app_data, api_response):
             ac.TAGS: list(app_data[jk.TAGS])
         }
     }
-    payload = payload_generator.\
-        gen_payload_with_params(_ADD_NOTE, params)
+    payload = payload_generator.gen_payload_with_params(_ADD_NOTE, params)
 
     return server_comm.send_and_receive_payload(payload)
 

@@ -37,6 +37,8 @@ def add_note():
     new_word_json = None
     if api == android_json_keys.Apis.WORDS:
         new_word_json = words_api.new_word(data[android_json_keys.WORD], data[words_api.OPTIONS])
+    elif api == android_json_keys.Apis.NONE:
+        return notes_endpoint_handler.add_note(data, "")
 
     # In case we got an http error response from above
     if errors.is_error(new_word_json):
@@ -55,7 +57,7 @@ def decks_get():
     return decks_endpoint_handler.get_deck_names()
 
 
-@app.route("/test_new_card", methods=['GET'])
+@app.route("/test_new_card_words", methods=['GET'])
 def test_create():
     qs = {
         "word": "ergerg",
@@ -68,6 +70,17 @@ def test_create():
 
     return notes_endpoint_handler.add_note(qs, new_word_json)
 
+
+@app.route("/test_new_card_none", methods=['GET'])
+def test_create_with_no_api():
+    qs = {
+        "word": "HELLO",
+        "back": "WORLD",
+        "deck": "TEST",
+        "tags": [""]
+    }
+
+    return notes_endpoint_handler.add_note(qs, "")
 
 if __name__ == "__main__":
     app.run()
